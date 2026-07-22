@@ -15,7 +15,8 @@
 
 # 설치 가이드
 
-> 새 PC에 처음 세팅할 때 위에서부터 순서대로 따라 하면 됩니다. 소요 시간 약 15~20분.
+> 처음이라도 괜찮습니다. 천천히 따라오세요.
+> **자기 컴퓨터(Mac / Windows)에 해당하는 섹션만** 처음부터 끝까지 따라가면 됩니다. 소요 시간 약 20~30분.
 
 ## Step 0. 준비물
 
@@ -23,69 +24,216 @@
 |------|------|
 | Claude 계정 | [claude.ai](https://claude.ai) 가입 + **Pro 또는 Max 구독** (Claude Code 사용 조건) |
 | GitHub 계정 | 아래 Step 1에서 가입 |
-| 터미널 | Mac: 기본 `터미널` 앱 / Windows: `PowerShell` (기본 내장) |
+| 터미널 | Mac: 기본 `터미널` 앱 (Cmd + Space → "터미널") / Windows: `PowerShell` (Win + X → "Windows PowerShell" 또는 "터미널") |
 
-## Step 1. GitHub 가입 & Git 설정
-
-### 1-1. GitHub 가입
+## Step 1. GitHub 가입
 
 1. [github.com/signup](https://github.com/signup) 접속
 2. 이메일 → 비밀번호 → 사용자 이름(영문) 입력 후 가입
 3. 이메일 인증 완료
 
-### 1-2. Git 설치
+---
 
-**Mac** — 터미널에서:
+## 🍎 Mac 설치
+
+### 1단계: Xcode Command Line Tools 설치
+
+Mac에서 개발 도구를 쓰려면 Apple의 기본 도구가 필요합니다.
+설치 프로그램이 자동으로 뜨니까 걱정하지 마세요.
+
+터미널을 열고 (Cmd + Space → "터미널" 입력 → Enter) 아래를 붙여넣으세요:
+
 ```bash
-git --version
+xcode-select --install
 ```
-버전이 나오면 이미 설치된 것. 안 나오면 자동으로 설치 팝업이 뜹니다 (또는 `xcode-select --install`).
 
-**Windows** — PowerShell에서:
+Enter를 누르면 설치 팝업 창이 뜹니다.
+
+- **"설치" 버튼을 클릭**하세요
+- 팝업이 안 보이면 Cmd + Tab으로 찾거나, Dock(화면 하단 바)을 확인하세요
+- 설치 완료까지 **5~10분** 정도 걸립니다
+- "이미 설치되어 있습니다" 메시지가 나오면 이 단계는 건너뛰세요
+
+이건 한 번만 하면 됩니다. 나중에 다시 할 필요 없어요.
+
+### 2단계: Node.js 설치
+
+Claude Code를 실행하려면 Node.js가 필요합니다.
+
+1. https://nodejs.org 에 접속
+2. **"LTS" 버전** 클릭해서 다운로드
+3. 다운로드된 파일(.pkg) 실행 → Continue 계속 클릭 → 완료
+
+설치 확인 (터미널에서):
+
+```bash
+node --version
+```
+
+**v18 이상** 숫자가 나오면 성공!
+
+### 3단계: Claude Code 설치
+
+터미널에서 아래를 복사해서 붙여넣기:
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+Enter 누르면 설치가 시작됩니다. (1~2분 걸림)
+
+### 4단계: 확인
+
+```bash
+claude
+```
+
+대화 화면이 뜨면 성공!
+
+### Mac — 잘 안 될 때
+
+**"claude를 찾을 수 없습니다"**
+
+터미널을 껐다가 다시 여세요. 그래도 안 되면:
+
+```bash
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/."$(basename "$SHELL")rc" && source ~/."$(basename "$SHELL")rc"
+```
+
+**Xcode 설치 팝업이 안 뜸**
+
+Dock(화면 하단 바)을 확인하세요. 설치 창이 뒤에 숨어있을 수 있습니다.
+Cmd + Tab으로 "소프트웨어 업데이트" 또는 "Install" 창을 찾아보세요.
+
+### Mac 설치 체크리스트
+
+- [ ] Xcode Command Line Tools 설치함 (팝업에서 "설치" 클릭)
+- [ ] Node.js 설치함 (nodejs.org에서 LTS 버전)
+- [ ] Claude Code 설치함
+- [ ] `claude` 실행해서 대화 화면 확인함
+
+---
+
+## 🪟 Windows 설치
+
+### 1단계: Git for Windows 설치 (Claude Code보다 먼저!)
+
+Claude Code는 내부적으로 이런 명령어를 씁니다:
+
+```
+ls    (파일 목록 보기)
+cat   (파일 내용 보기)
+grep  (텍스트 찾기)
+```
+
+이건 Mac/Linux 명령어인데, Windows는 원래 못 알아듣습니다.
+Git for Windows를 설치하면 "Git Bash"라는 게 같이 깔리는데, 이게 통역사 역할을 해서 Windows도 이 명령어를 이해하게 됩니다.
+
+1. https://git-scm.com/downloads/win 에 접속
+2. **"64-bit Git for Windows Setup"** 클릭해서 다운로드
+3. 다운로드된 파일 실행 → 그냥 "Next" 계속 누르면 됩니다 (기본값이 좋음)
+
+### 2단계: Node.js 설치
+
+Claude Code를 실행하려면 Node.js가 필요합니다.
+
+1. https://nodejs.org 에 접속
+2. **"LTS" 버전** 클릭해서 다운로드
+3. 다운로드된 파일(.msi) 실행 → Next 계속 클릭 → 완료
+
+설치 확인 (PowerShell에서):
+
 ```powershell
-winget install --id Git.Git -e
+node --version
 ```
-또는 [git-scm.com/download/win](https://git-scm.com/download/win) 에서 설치 파일 다운로드 → 전부 기본값으로 Next.
-설치 후 **PowerShell을 껐다 다시 켜야** `git` 명령이 인식됩니다.
 
-### 1-3. Git 사용자 설정 (최초 1회)
+**v18 이상** 숫자가 나오면 성공!
 
-Mac/Windows 공통:
+### 3단계: Claude Code 설치
+
+PowerShell을 열고 (Win + X → "Windows PowerShell" 또는 "터미널" 클릭) 아래를 붙여넣기:
+
+```powershell
+irm https://claude.ai/install.ps1 | iex
+```
+
+Enter 누르면 설치가 시작됩니다.
+
+### 4단계: PowerShell 재시작 (중요!)
+
+설치가 끝나면 **PowerShell을 완전히 닫고 새로 여세요.**
+환경변수가 업데이트되려면 이게 꼭 필요합니다.
+
+### 5단계: 확인
+
+```powershell
+claude
+```
+
+대화 화면이 뜨면 성공!
+
+### Windows — 잘 안 될 때
+
+**"claude를 찾을 수 없습니다"**
+
+1. PowerShell을 껐다가 다시 여세요.
+2. 그래도 안 되면 PATH 직접 추가:
+
+```powershell
+[Environment]::SetEnvironmentVariable("PATH", "$env:PATH;$env:USERPROFILE\.local\bin", "User")
+```
+
+3. PowerShell 다시 껐다가 열기
+4. 이제 `claude` 입력
+
+**Git for Windows 설치했는데 claude 안 됨**
+
+1. Git for Windows 설치 완료 확인
+2. PowerShell 새로 열기
+3. 다시 Claude Code 설치 명령어 실행
+
+### Windows 설치 체크리스트
+
+- [ ] Git for Windows 설치함 (Claude Code보다 먼저!)
+- [ ] Node.js 설치함 (nodejs.org에서 LTS 버전)
+- [ ] Claude Code 설치함
+- [ ] PowerShell 껐다가 다시 열었음 (중요!)
+- [ ] `claude` 실행해서 대화 화면 확인함
+
+---
+
+## VS Code 설치 (Mac / Windows 공통, 권장)
+
+Claude Code가 만든 코드를 눈으로 보고 수정할 수 있는 편집기입니다.
+터미널 화면만 보는 것보다 훨씬 편해요. (코드에 색깔도 입혀주고, 에러도 알려줌)
+
+1. https://code.visualstudio.com/ 에서 다운로드
+2. 다운로드된 파일 실행 → Next 계속 → 완료 (Mac도 Windows도 똑같습니다)
+
+---
+
+## Step 2. Git 사용자 설정 (최초 1회)
+
+Mac은 터미널, Windows는 PowerShell에서:
+
 ```bash
 git config --global user.name "내이름"
 git config --global user.email "GitHub가입이메일@example.com"
 ```
 
 확인:
+
 ```bash
 git config --global user.name
 git config --global user.email
 ```
 
-## Step 2. Claude Code 설치
-
-**Mac** — 터미널에서:
-```bash
-curl -fsSL https://claude.ai/install.sh | bash
-```
-
-**Windows** — PowerShell에서:
-```powershell
-irm https://claude.ai/install.ps1 | iex
-```
-
-설치 확인 (터미널/PowerShell 재시작 후):
-```bash
-claude --version
-```
-
-> 💡 npm이 익숙하다면 `npm install -g @anthropic-ai/claude-code` 로도 설치할 수 있습니다 (Node.js 18+ 필요).
-
-## Step 3. 워크스페이스 다운로드
+## Step 3. 스타터팩 다운로드
 
 ### 방법 A — git clone (권장: 이후 업데이트 받기 쉬움)
 
 원하는 위치(예: 바탕화면)에서:
+
 ```bash
 git clone https://github.com/Penguin2646/lush-ax-starter-pack.git
 cd lush-ax-starter-pack
@@ -100,6 +248,7 @@ cd lush-ax-starter-pack
 ## Step 4. 첫 실행 & 초기 설정
 
 워크스페이스 폴더 안에서 Claude Code 실행:
+
 ```bash
 claude
 ```
@@ -108,6 +257,7 @@ claude
 - 폴더 신뢰 여부를 물으면 **Yes** 선택
 
 로그인이 끝나면 Claude에게 이렇게 말하세요:
+
 ```
 워크스페이스 세팅해줘
 ```
