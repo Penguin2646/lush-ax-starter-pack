@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>펭귄 예시 갤러리 — 이런 것들 해드려요</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0b0a; --card:#0c0d0c; --card2:#0a0b0a;
+    --green:#37e07b; --green-soft:rgba(55,224,123,.14); --line:rgba(55,224,123,.34);
+    --txt:#f4f6f4; --mut:#8b938c; --mut2:#5a615b; --line-soft:rgba(255,255,255,.08);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#0a0b0a;font-family:'Pretendard',system-ui,sans-serif;color:var(--txt);
+    word-break:keep-all;text-wrap:pretty;line-height:1.6;}
+  body{max-width:1000px;margin:0 auto;padding:60px 26px 90px;position:relative;}
+  body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(900px 520px at 50% -8%, var(--green-soft), transparent 60%), #000;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--mut);display:flex;align-items:center;gap:11px;margin-bottom:16px;}
+  .eyebrow .sep{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);}
+  .eyebrow b{color:var(--green);font-weight:600;}
+  h1{font-size:38px;font-weight:800;letter-spacing:-.02em;line-height:1.15;}
+  h1 .g{color:var(--green);text-shadow:0 0 26px rgba(55,224,123,.5);}
+  .lead{margin-top:12px;font-size:16px;color:var(--mut);max-width:720px;}
+  .peng{font-family:'IBM Plex Mono',monospace;white-space:pre;color:var(--green);font-size:12px;line-height:1.25;margin:22px 0 8px;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:30px;}
+  .card{border:1px solid var(--line-soft);border-radius:16px;padding:20px 20px;
+    background:linear-gradient(180deg,var(--card),var(--card2));display:flex;flex-direction:column;
+    transition:border-color .15s, box-shadow .15s;}
+  .card:hover{border-color:var(--line);box-shadow:0 0 34px -16px rgba(55,224,123,.55);}
+  .card .h{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .card .ic{font-size:24px;}
+  .card .h b{font-size:17px;font-weight:800;}
+  .ba{display:flex;align-items:center;gap:10px;font-size:13.5px;}
+  .ba .before{color:var(--mut);}
+  .ba .arrow{color:var(--green);font-weight:800;}
+  .ba .after{color:#fff;font-weight:700;}
+  .card .tools{margin-top:12px;display:flex;flex-wrap:wrap;gap:5px;}
+  .card .tool{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#cfe9d8;border:1px solid var(--line);
+    border-radius:6px;padding:3px 8px;background:var(--green-soft);}
+  .card .pick{margin-top:14px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--mut2);}
+  .card.free{border-style:dashed;border-color:var(--line-soft);justify-content:center;align-items:center;text-align:center;}
+  .card.free .big{font-size:16px;color:#dde3dd;font-weight:700;}
+  .card.free .sub{font-size:12.5px;color:var(--mut);margin-top:6px;}
+  .foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line-soft);display:flex;justify-content:space-between;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mut2);letter-spacing:.05em;}
+  @media (max-width:720px){.grid{grid-template-columns:1fr}h1{font-size:30px}}
+</style>
+</head>
+<body>
+
+  <div class="eyebrow"><span class="sep"></span><b>WORK-PENGUIN</b> · 예시 갤러리</div>
+  <div class="peng">  .--.
+ |o_o |   "막막하면, 이런 것 중에
+ |:_/ |    비슷한 거 골라보세요"
+//   \ \</div>
+  <h1>이런 것들 해드려요<span class="g">.</span></h1>
+  <p class="lead">막막할 때만 뜨는 화면이에요. 비슷한 게 있으면 고르고, 없으면 그냥 편하게 말씀하셔도 돼요 — 고르면 <b style="color:#dde3dd">5분 안에 결과물 하나</b>부터 만들어 드려요.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="h"><span class="ic">📊</span><b>매주 실적 취합</b></div>
+      <div class="ba"><span class="before">엑셀 수기 복붙·계산</span><span class="arrow">▶</span><span class="after">자동 리포트</span></div>
+      <div class="tools"><span class="tool">sales-analysis</span><span class="tool">excel-to-csv</span></div>
+      <div class="pick">"매주 실적 정리가 너무 오래 걸려"</div>
+    </div>
+    <div class="card">
+      <div class="h"><span class="ic">📄</span><b>보고서</b></div>
+      <div class="ba"><span class="before">텍스트·PDF 수작업</span><span class="arrow">▶</span><span class="after">웹 대시보드</span></div>
+      <div class="tools"><span class="tool">md-to-pdf</span><span class="tool">frontend-design</span></div>
+      <div class="pick">"맨날 PDF 보고서 만드는 거"</div>
+    </div>
+    <div class="card">
+      <div class="h"><span class="ic">🔍</span><b>경쟁사·시장 조사</b></div>
+      <div class="ba"><span class="before">검색·복붙 반나절</span><span class="arrow">▶</span><span class="after">3소스 자동 종합</span></div>
+      <div class="tools"><span class="tool">research-worker</span><span class="tool">web-crawler-ocr</span></div>
+      <div class="pick">"경쟁사 조사 정리가 막막해"</div>
+    </div>
+    <div class="card">
+      <div class="h"><span class="ic">🎨</span><b>기획안 디자인</b></div>
+      <div class="ba"><span class="before">밋밋한 슬라이드</span><span class="arrow">▶</span><span class="after">레퍼런스로 고퀄 시안</span></div>
+      <div class="tools"><span class="tool">frontend-design</span><span class="tool">taste-skill</span></div>
+      <div class="pick">"기획안이 늘 밋밋해"</div>
+    </div>
+    <div class="card">
+      <div class="h"><span class="ic">🗂</span><b>흩어진 자료</b></div>
+      <div class="ba"><span class="before">폴더에 뒤죽박죽</span><span class="arrow">▶</span><span class="after">지식그래프로 한눈에</span></div>
+      <div class="tools"><span class="tool">graphify</span></div>
+      <div class="pick">"자료가 너무 흩어져 있어"</div>
+    </div>
+    <div class="card">
+      <div class="h"><span class="ic">🎯</span><b>전략·기획</b></div>
+      <div class="ba"><span class="before">목표만·현황 수기·진행 깜깜</span><span class="arrow">▶</span><span class="after">한 페이지 전략 뷰</span></div>
+      <div class="tools"><span class="tool">strategy-scoreboard</span><span class="tool">pm-skills</span><span class="tool">dashboard-prd</span></div>
+      <div class="pick">"프로덕트 세일즈 성장 전략, 진행 파악이 수작업이라 느려"</div>
+    </div>
+    <div class="card free">
+      <div class="big">＋ 내 업무는 여기 없어요</div>
+      <div class="sub">괜찮아요 — 그냥 편하게 말씀하시면<br>펭귄이 맞춰서 시작해드려요.</div>
+    </div>
+  </div>
+
+  <div class="foot"><span>🐧 work-penguin · 예시 갤러리 (막막할 때만)</span><span>고르면 → 5분 퀵윈</span></div>
+
+</body>
+</html>

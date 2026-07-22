@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}} — work-penguin</title>
+<!--
+  work-penguin VIEW TEMPLATE
+  펭귄이 결과를 시각화할 때 이 파일을 복제해 {{...}} 자리를 채운다.
+  - 자체 포함(single-file): CSS 내장. 폰트만 CDN(실패 시 system 폴백).
+  - 받는 사람 PC 브라우저에서 그대로 열림.
+  섹션은 필요한 것만 남기고 지워도 된다 (적응형).
+-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#000; --card:#0c0d0c; --card2:#0a0b0a;
+    --green:#37e07b; --green-soft:rgba(55,224,123,.14); --line:rgba(55,224,123,.34);
+    --txt:#f4f6f4; --mut:#8b938c; --mut2:#5a615b; --line-soft:rgba(255,255,255,.08);
+    --steel:#8fa6c4; --gold:#ecb24a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#0a0b0a;font-family:'Pretendard',system-ui,sans-serif;
+    color:var(--txt);word-break:keep-all;text-wrap:pretty;line-height:1.6;}
+  body{max-width:1080px;margin:0 auto;padding:64px 28px 96px;position:relative;}
+  body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(900px 520px at 50% -8%, var(--green-soft), transparent 60%), #000;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.3em;
+    text-transform:uppercase;color:var(--mut);display:flex;align-items:center;gap:11px;margin-bottom:18px;}
+  .eyebrow .sep{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);}
+  .eyebrow b{color:var(--green);font-weight:600;}
+  h1{font-size:42px;font-weight:800;letter-spacing:-.02em;line-height:1.15;}
+  h1 .g{color:var(--green);text-shadow:0 0 26px rgba(55,224,123,.5);}
+  .lead{margin-top:14px;font-size:16px;color:var(--mut);max-width:760px;}
+  section{margin-top:56px;}
+  .sec-title{font-size:26px;font-weight:800;margin-bottom:4px;}
+  .sec-sub{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--mut2);margin-bottom:24px;}
+
+  /* Before → After flow */
+  .flow{display:grid;grid-template-columns:1fr 44px 1fr;align-items:stretch;gap:14px;}
+  .fcard{border:1px solid var(--line-soft);border-radius:16px;padding:22px 22px;
+    background:linear-gradient(180deg,var(--card),var(--card2));}
+  .fcard.after{border-color:var(--line);box-shadow:0 0 34px -18px rgba(55,224,123,.55);}
+  .fcard .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--mut2);}
+  .fcard.after .tag{color:var(--green);}
+  .fcard h3{font-size:18px;font-weight:800;margin:8px 0 12px;}
+  .fcard ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+  .fcard li{font-size:14px;color:#cdd3cd;padding-left:18px;position:relative;}
+  .fcard li::before{content:"›";position:absolute;left:0;color:var(--mut2);}
+  .fcard.after li::before{content:"✓";color:var(--green);}
+  .arrow{display:flex;align-items:center;justify-content:center;color:var(--green);font-size:22px;}
+
+  /* maturity ladder */
+  .ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .rung{border:1px solid var(--line-soft);border-radius:14px;padding:16px 16px;
+    background:linear-gradient(180deg,var(--card),var(--card2));position:relative;}
+  .rung .lv{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--mut2);letter-spacing:.1em;}
+  .rung h4{font-size:15px;font-weight:800;margin:6px 0 6px;}
+  .rung p{font-size:12.5px;color:var(--mut);line-height:1.5;}
+  .rung.now{border-color:var(--green);box-shadow:0 0 30px -14px rgba(55,224,123,.6);}
+  .rung.now .lv{color:var(--green);}
+  .rung.now::after{content:"지금 여기";position:absolute;top:-10px;right:12px;
+    font-family:'IBM Plex Mono',monospace;font-size:10px;color:#06210f;background:var(--green);
+    border-radius:6px;padding:2px 8px;font-weight:700;box-shadow:0 0 14px rgba(55,224,123,.5);}
+  .rung.top{border-color:rgba(236,178,74,.4);}
+  .rung.top .lv{color:var(--gold);}
+
+  /* scoreboard table */
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top;}
+  th{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--mut2);}
+  td{color:#dde3dd;}
+  td .up{color:var(--green);font-weight:700;}
+  tr:last-child td{border-bottom:none;}
+
+  /* metric chips */
+  .metrics{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px;}
+  .metric{border:1px solid var(--line);border-radius:14px;padding:16px 22px;min-width:160px;
+    background:var(--green-soft);}
+  .metric .big{font-size:32px;font-weight:800;color:var(--green);line-height:1;}
+  .metric .lbl{font-size:12px;color:var(--mut);margin-top:8px;}
+
+  .foot{margin-top:72px;padding-top:20px;border-top:1px solid var(--line-soft);
+    display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;
+    font-size:11px;color:var(--mut2);letter-spacing:.05em;}
+  @media (max-width:760px){
+    .flow{grid-template-columns:1fr;}.arrow{transform:rotate(90deg);}
+    .ladder{grid-template-columns:1fr 1fr;} h1{font-size:32px;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="eyebrow"><span class="sep"></span><b>WORK-PENGUIN</b> · {{WORK_TYPE}} · {{DATE}}</div>
+  <h1>{{TITLE}}<span class="g">.</span></h1>
+  <p class="lead">{{LEAD}}</p>
+
+  <!-- ① 효과 요약 -->
+  <section>
+    <div class="metrics">
+      <div class="metric"><div class="big">{{METRIC_1}}</div><div class="lbl">{{METRIC_1_LABEL}}</div></div>
+      <div class="metric"><div class="big">{{METRIC_2}}</div><div class="lbl">{{METRIC_2_LABEL}}</div></div>
+    </div>
+  </section>
+
+  <!-- ② Before → After 워크플로우 -->
+  <section>
+    <div class="sec-title">일하는 방식</div>
+    <div class="sec-sub">Before → After</div>
+    <div class="flow">
+      <div class="fcard">
+        <span class="tag">Before</span><h3>{{BEFORE_TITLE}}</h3>
+        <ul>{{BEFORE_STEPS}}<!-- <li>단계</li> --></ul>
+      </div>
+      <div class="arrow">▶</div>
+      <div class="fcard after">
+        <span class="tag">After</span><h3>{{AFTER_TITLE}}</h3>
+        <ul>{{AFTER_STEPS}}<!-- <li>단계</li> --></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ③ 성숙도 사다리 (.now / .top 클래스로 강조) -->
+  <section>
+    <div class="sec-title">지금 어디까지 왔나</div>
+    <div class="sec-sub">Maturity Ladder</div>
+    <div class="ladder">
+      <div class="rung"><div class="lv">L1</div><h4>{{L1_TITLE}}</h4><p>{{L1_DESC}}</p></div>
+      <div class="rung now"><div class="lv">L2</div><h4>{{L2_TITLE}}</h4><p>{{L2_DESC}}</p></div>
+      <div class="rung"><div class="lv">L3</div><h4>{{L3_TITLE}}</h4><p>{{L3_DESC}}</p></div>
+      <div class="rung top"><div class="lv">L4 · 최상위</div><h4>{{L4_TITLE}}</h4><p>{{L4_DESC}}</p></div>
+    </div>
+  </section>
+
+  <!-- ④ 누적 스코어보드 -->
+  <section>
+    <div class="sec-title">스코어보드</div>
+    <div class="sec-sub">Cumulative Scoreboard</div>
+    <table>
+      <thead><tr>
+        <th>날짜</th><th>업무</th><th>성숙도</th><th>Before</th><th>After</th><th>효과</th><th>확인</th>
+      </tr></thead>
+      <tbody>
+        {{SCOREBOARD_ROWS}}
+        <!-- <tr><td>2026-06-24</td><td>월간 리포트</td><td>L2 <span class="up">→ L3</span></td><td>3시간</td><td>40분</td><td class="up">월 9h↓</td><td>⏳</td></tr> -->
+      </tbody>
+    </table>
+  </section>
+
+  <div class="foot"><span>🐧 work-penguin</span><span>{{PERSON_OR_TEAM}}</span></div>
+
+</body>
+</html>

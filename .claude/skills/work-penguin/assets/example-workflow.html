@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>펭귄은 이렇게 일해요 — work-penguin 예시</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#000; --card:#0c0d0c; --card2:#0a0b0a;
+    --green:#37e07b; --green-soft:rgba(55,224,123,.14); --line:rgba(55,224,123,.34);
+    --txt:#f4f6f4; --mut:#8b938c; --mut2:#5a615b; --line-soft:rgba(255,255,255,.08);
+    --steel:#8fa6c4; --gold:#ecb24a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#0a0b0a;font-family:'Pretendard',system-ui,sans-serif;
+    color:var(--txt);word-break:keep-all;text-wrap:pretty;line-height:1.6;}
+  body{max-width:1080px;margin:0 auto;padding:64px 28px 96px;position:relative;}
+  body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(900px 520px at 50% -8%, var(--green-soft), transparent 60%), #000;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.3em;
+    text-transform:uppercase;color:var(--mut);display:flex;align-items:center;gap:11px;margin-bottom:18px;}
+  .eyebrow .sep{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);}
+  .eyebrow b{color:var(--green);font-weight:600;}
+  h1{font-size:42px;font-weight:800;letter-spacing:-.02em;line-height:1.15;}
+  h1 .g{color:var(--green);text-shadow:0 0 26px rgba(55,224,123,.5);}
+  .lead{margin-top:14px;font-size:16px;color:var(--mut);max-width:760px;}
+  .peng{font-family:'IBM Plex Mono',monospace;white-space:pre;color:var(--green);font-size:12px;line-height:1.25;margin-top:22px;}
+  section{margin-top:56px;}
+  .sec-title{font-size:26px;font-weight:800;margin-bottom:4px;}
+  .sec-sub{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--mut2);margin-bottom:24px;}
+  .flow{display:grid;grid-template-columns:1fr 44px 1fr;align-items:stretch;gap:14px;}
+  .fcard{border:1px solid var(--line-soft);border-radius:16px;padding:22px 22px;
+    background:linear-gradient(180deg,var(--card),var(--card2));}
+  .fcard.after{border-color:var(--line);box-shadow:0 0 34px -18px rgba(55,224,123,.55);}
+  .fcard .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut2);}
+  .fcard.after .tag{color:var(--green);}
+  .fcard h3{font-size:18px;font-weight:800;margin:8px 0 12px;}
+  .fcard ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+  .fcard li{font-size:14px;color:#cdd3cd;padding-left:18px;position:relative;}
+  .fcard li::before{content:"›";position:absolute;left:0;color:var(--mut2);}
+  .fcard.after li::before{content:"✓";color:var(--green);}
+  .arrow{display:flex;align-items:center;justify-content:center;color:var(--green);font-size:22px;}
+  .ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:end;}
+  .rung{border:1px solid var(--line-soft);border-radius:14px;padding:16px 16px;
+    background:linear-gradient(180deg,var(--card),var(--card2));position:relative;}
+  .rung .lv{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--mut2);letter-spacing:.1em;}
+  .rung h4{font-size:15px;font-weight:800;margin:6px 0 6px;}
+  .rung p{font-size:12.5px;color:var(--mut);line-height:1.5;}
+  .rung.r1{padding-bottom:16px} .rung.r2{padding-bottom:30px} .rung.r3{padding-bottom:46px} .rung.r4{padding-bottom:62px}
+  .rung.top{border-color:rgba(236,178,74,.45);box-shadow:0 0 30px -14px rgba(236,178,74,.6);}
+  .rung.top .lv{color:var(--gold);}
+  .rung.top::after{content:"펭귄 도착";position:absolute;top:-10px;right:12px;
+    font-family:'IBM Plex Mono',monospace;font-size:10px;color:#231803;background:var(--gold);
+    border-radius:6px;padding:2px 8px;font-weight:700;}
+  .rung.start::after{content:"여기서 출발";position:absolute;top:-10px;right:12px;
+    font-family:'IBM Plex Mono',monospace;font-size:10px;color:#cdd3cd;background:rgba(255,255,255,.08);
+    border-radius:6px;padding:2px 8px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top;}
+  th{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut2);}
+  td{color:#dde3dd;} td .up{color:var(--green);font-weight:700;} tr:last-child td{border-bottom:none;}
+  .metrics{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px;}
+  .metric{border:1px solid var(--line);border-radius:14px;padding:16px 22px;min-width:160px;background:var(--green-soft);}
+  .metric .big{font-size:32px;font-weight:800;color:var(--green);line-height:1;}
+  .metric .lbl{font-size:12px;color:var(--mut);margin-top:8px;}
+  .foot{margin-top:72px;padding-top:20px;border-top:1px solid var(--line-soft);display:flex;justify-content:space-between;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mut2);letter-spacing:.05em;}
+  @media (max-width:760px){.flow{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}.ladder{grid-template-columns:1fr 1fr}h1{font-size:32px}}
+</style>
+</head>
+<body>
+
+  <div class="eyebrow"><span class="sep"></span><b>WORK-PENGUIN</b> · 예시 · 주문·예측 데이터 보고</div>
+  <h1>펭귄은 이렇게 일했어요<span class="g">.</span></h1>
+  <p class="lead">손으로 하던 업무를 자동·한 페이지로 끌어올린 실제 여정 — <b style="color:#dde3dd">예시 ① 주문·예측 데이터 보고</b>, <b style="color:#dde3dd">예시 ② 프로덕트 세일즈 성장 전략</b>. 처음부터 점프한 게 아니라, 매번 한 단계만 올렸어요.</p>
+  <div class="peng">  .--.
+ |o_o |     "한 번에 다 바꾸지 않아요.
+ |:_/ |      바로 위 한 칸만 올립니다."
+//   \ \
+(|     | )</div>
+
+  <section>
+    <div class="metrics">
+      <div class="metric"><div class="big">3h → 30m</div><div class="lbl">회당 보고 준비 시간</div></div>
+      <div class="metric"><div class="big">~월 10h</div><div class="lbl">절감 (주간 반복 기준)</div></div>
+      <div class="metric"><div class="big">L1 → L4</div><div class="lbl">업무 성숙도</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-title">일하는 방식 — 예시 ① 데이터 보고</div>
+    <div class="sec-sub">Before → After · 주문·예측</div>
+    <div class="flow">
+      <div class="fcard">
+        <span class="tag">Before · 손으로</span><h3>엑셀 수작업 취합</h3>
+        <ul>
+          <li>여러 엑셀 파일을 열어 수기로 합치기</li>
+          <li>±20% 벗어난 품목을 눈으로 하나씩 체크</li>
+          <li>결과를 메일/텍스트로 정리해 공유</li>
+          <li>매주 같은 작업 반복 (회당 3시간)</li>
+        </ul>
+      </div>
+      <div class="arrow">▶</div>
+      <div class="fcard after">
+        <span class="tag">After · 도구로</span><h3>자동 판정 + 웹 대시보드</h3>
+        <ul>
+          <li><b>product-forecast</b>가 ±20% 자동 판정</li>
+          <li><b>graphify</b>로 데이터 흐름을 지식그래프화</li>
+          <li>웹 대시보드에서 실시간 확인</li>
+          <li>임원 보고용 PPT 없이 링크 공유</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-title">한 칸씩 올라온 길 — 예시 ①</div>
+    <div class="sec-sub">Maturity Ladder · 보고서·데이터</div>
+    <div class="ladder">
+      <div class="rung r1 start"><div class="lv">L1</div><h4>수작업·텍스트</h4><p>엑셀에서 눈으로 보고 메일로 공유</p></div>
+      <div class="rung r2"><div class="lv">L2</div><h4>문서화·PDF</h4><p>정리된 문서로 보고 (md-to-pdf)</p></div>
+      <div class="rung r3"><div class="lv">L3</div><h4>반자동·스킬</h4><p>예측·실적 자동 비교 (product-forecast, sales-analysis)</p></div>
+      <div class="rung r4 top"><div class="lv">L4 · 최상위</div><h4>자동·앱/웹</h4><p>실시간 대시보드 + 지식그래프 (graphify, frontend-design)</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-title">일하는 방식 — 예시 ② 프로덕트 세일즈 성장 전략</div>
+    <div class="sec-sub">Before → After · 전략/기획</div>
+    <div class="flow">
+      <div class="fcard">
+        <span class="tag">Before · 흩어진 전략</span><h3>목표만 박제</h3>
+        <ul>
+          <li>목표는 문서에 적어두고 끝</li>
+          <li>현황은 내가 따로 파악해 수기로 업데이트·공유</li>
+          <li>진행 현황을 볼 때마다 수작업으로 집계 → 느리고 비효율</li>
+          <li>어디를 개선해야 골에 가까워지나 — 플랜 잡기 어려움</li>
+          <li>한 페이지로 안 보임 (여기저기 흩어짐)</li>
+        </ul>
+      </div>
+      <div class="arrow">▶</div>
+      <div class="fcard after">
+        <span class="tag">After · 한 페이지 전략 뷰</span><h3>목표·현황·진행·개선이 한눈에</h3>
+        <ul>
+          <li>목표 + 현황이 한 화면에 (데이터 연결)</li>
+          <li>골 대비 <b>진행률 자동 가시화</b></li>
+          <li>다음에 손볼 곳(개선 액션)까지 제시</li>
+          <li>주기적·실시간 업데이트 → 공유는 링크 하나</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-title">전략·기획은 어디까지 가나 — 예시 ②</div>
+    <div class="sec-sub">Maturity Ladder · 전략/기획</div>
+    <div class="ladder">
+      <div class="rung r1 start"><div class="lv">L1</div><h4>목표만</h4><p>잡아두고 끝 · 현황·진행 추적 없음</p></div>
+      <div class="rung r2"><div class="lv">L2</div><h4>수기 현황</h4><p>문서로 현황 업데이트·공유</p></div>
+      <div class="rung r3"><div class="lv">L3</div><h4>진행률 가시화</h4><p>목표-현황 연결, 진행% 보임</p></div>
+      <div class="rung r4 top"><div class="lv">L4 · 최상위</div><h4>한 페이지 전략 뷰</h4><p>목표·현황·진행·개선이 살아있는 대시보드</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-title">스코어보드 (이렇게 쌓여요)</div>
+    <div class="sec-sub">Cumulative Scoreboard</div>
+    <table>
+      <thead><tr><th>날짜</th><th>업무</th><th>성숙도</th><th>Before</th><th>After</th><th>효과</th><th>확인</th></tr></thead>
+      <tbody>
+        <tr><td>05-12</td><td>예측 vs 실적 비교</td><td>L1 <span class="up">→ L3</span></td><td>반나절</td><td>자동 판정</td><td class="up">건당 ↓</td><td>✅</td></tr>
+        <tr><td>06-22</td><td>데이터 흐름 정리</td><td>L2 <span class="up">→ L4</span></td><td>수기 도식</td><td>지식그래프</td><td class="up">재사용↑</td><td>✅</td></tr>
+        <tr><td>06-24</td><td>주간 보고</td><td>L2 <span class="up">→ L4</span></td><td>3시간/회</td><td>30분/회</td><td class="up">월 10h↓</td><td>⏳ 다음 확인</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="foot"><span>🐧 work-penguin · 예시 뷰</span><span>펭귄 (Commercial Planning)</span></div>
+
+</body>
+</html>

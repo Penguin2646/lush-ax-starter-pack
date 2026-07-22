@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>LUSH AX 스타터팩 — 스킬 카탈로그</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#000; --card:#0c0d0c; --card2:#0a0b0a;
+    --green:#37e07b; --green-soft:rgba(55,224,123,.14); --line:rgba(55,224,123,.34);
+    --txt:#f4f6f4; --mut:#8b938c; --mut2:#5a615b; --line-soft:rgba(255,255,255,.08);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  @page{size:1280px 720px;margin:0}
+  html,body{background:#111;font-family:'Pretendard',sans-serif;word-break:keep-all;text-wrap:pretty;}
+  @media print{ html,body{background:#000} .slide{margin:0} }
+  .slide{position:relative;width:1280px;height:720px;background:var(--bg);color:var(--txt);
+    overflow:hidden;margin:0 auto;page-break-after:always;break-after:page;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;display:flex;flex-direction:column;}
+  .slide::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(900px 520px at 50% -10%, var(--green-soft), transparent 60%);}
+  .slide.gold{--green:#ecb24a;--green-soft:rgba(236,178,74,.15);--line:rgba(236,178,74,.36);}
+  .slide.steel{--green:#8fa6c4;--green-soft:rgba(143,166,196,.13);--line:rgba(143,166,196,.30);}
+
+  .body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:56px 80px 0;position:relative;z-index:2;text-align:center;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--mut);display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:26px;}
+  .eyebrow b{color:var(--green);font-weight:600;}
+  .eyebrow .sep{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);}
+  .caption{position:relative;z-index:2;height:92px;display:flex;align-items:center;justify-content:center;padding:0 90px;text-align:center;}
+  .caption span{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.01em;}
+  .caption .g{color:var(--green);}
+  .foot{position:absolute;bottom:24px;left:80px;right:80px;z-index:2;display:flex;justify-content:space-between;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--mut2);letter-spacing:.05em;}
+
+  /* COVER */
+  .cover h1{font-size:58px;font-weight:800;line-height:1.12;letter-spacing:-.02em;}
+  .cover h1 .g{color:var(--green);text-shadow:0 0 26px rgba(55,224,123,.55);}
+  .cover .lead{margin-top:22px;font-size:18px;color:var(--mut);line-height:1.7;max-width:820px;}
+  .layers{margin-top:36px;display:flex;gap:18px;}
+  .lchip{border:1px solid var(--line);border-radius:14px;padding:16px 26px;min-width:190px;text-align:left;
+    background:linear-gradient(180deg,var(--card),var(--card2));}
+  .lchip .ln{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--mut);letter-spacing:.1em;}
+  .lchip b{display:block;font-size:19px;font-weight:800;margin-top:6px;}
+  .lchip .ct{font-size:13px;color:var(--green);font-weight:700;margin-top:5px;}
+  .c1{--green:#8fa6c4;--line:rgba(143,166,196,.32);} .c3{--green:#ecb24a;--line:rgba(236,178,74,.36);}
+
+  .sec-title{font-size:38px;font-weight:800;margin-bottom:8px;}
+  .sec-sub{font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.24em;color:var(--mut2);text-transform:uppercase;margin-bottom:30px;}
+
+  /* MAP (3 columns) */
+  .map{display:grid;grid-template-columns:repeat(3,332px);gap:22px;width:100%;max-width:1060px;}
+  .mcol{border:1px solid var(--line);border-radius:18px;padding:24px 22px;text-align:left;height:400px;
+    background:linear-gradient(180deg,var(--card),var(--card2));display:flex;flex-direction:column;
+    box-shadow:0 0 34px -18px rgba(55,224,123,.5);}
+  .mcol .mnum{font-size:13px;font-family:'IBM Plex Mono',monospace;color:var(--green);letter-spacing:.18em;}
+  .mcol h3{font-size:24px;font-weight:800;margin-top:8px;}
+  .mcol .men{font-size:12px;color:var(--mut2);font-family:'IBM Plex Mono',monospace;margin-top:3px;letter-spacing:.12em;}
+  .mcol .mcount{font-size:40px;font-weight:800;color:var(--green);margin-top:14px;line-height:1;}
+  .mcol .mcount small{font-size:15px;color:var(--mut);font-weight:600;margin-left:6px;}
+  .mcol .mdesc{font-size:13px;color:var(--mut);line-height:1.55;margin-top:12px;}
+  .mtags{margin-top:auto;display:flex;flex-wrap:wrap;gap:6px;padding-top:14px;}
+  .mtag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#d4dad4;border:1px solid var(--line-soft);
+    border-radius:6px;padding:4px 8px;background:rgba(255,255,255,.02);}
+  .mc1{--green:#8fa6c4;--line:rgba(143,166,196,.3);} .mc3{--green:#ecb24a;--line:rgba(236,178,74,.36);}
+
+  /* skill rows: 2-col compact cards */
+  .skgrid{display:grid;grid-template-columns:repeat(2,500px);gap:12px 20px;width:100%;justify-content:center;}
+  .sk{border:1px solid var(--line-soft);border-radius:12px;background:linear-gradient(180deg,var(--card),var(--card2));
+    padding:13px 16px;text-align:left;display:flex;gap:14px;align-items:flex-start;position:relative;}
+  .sk::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:3px;background:var(--green);}
+  .sk .nm{flex:none;width:178px;font-family:'IBM Plex Mono',monospace;font-size:13.5px;color:var(--green);font-weight:600;padding-left:6px;line-height:1.4;}
+  .sk p{font-size:12.5px;color:#c6ccc6;line-height:1.5;}
+  .sk p b{color:#fff;}
+
+  /* agents */
+  .aggrid{display:grid;gap:14px 20px;width:100%;justify-content:center;}
+  .ag{border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,var(--card),var(--card2));
+    padding:16px 18px;text-align:left;}
+  .ag .nm{font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--green);font-weight:600;}
+  .ag p{font-size:12.5px;color:#c6ccc6;line-height:1.5;margin-top:7px;}
+
+  /* start steps */
+  .steps{display:flex;flex-direction:column;gap:14px;width:880px;text-align:left;}
+  .step{display:grid;grid-template-columns:56px 1fr;gap:18px;border:1px solid var(--line-soft);border-radius:14px;
+    padding:16px 22px;background:linear-gradient(180deg,var(--card),var(--card2));align-items:center;}
+  .step .n{width:44px;height:44px;border-radius:12px;background:var(--green);color:#06210f;font-weight:800;font-size:20px;
+    display:flex;align-items:center;justify-content:center;}
+  .step b{font-size:17px;color:#fff;}
+  .step p{font-size:13.5px;color:var(--mut);margin-top:4px;line-height:1.5;}
+  .step code{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--green);background:var(--green-soft);
+    border:1px solid var(--line);border-radius:6px;padding:2px 8px;}
+</style>
+</head>
+<body>
+
+<!-- 1 COVER -->
+<section class="slide cover">
+  <div class="body">
+    <div class="eyebrow"><span class="sep"></span><b>LUSH&nbsp;AX</b> · 스타터팩 카탈로그 · 2026-07</div>
+    <h1>이 팩에 <span class="g">무엇이</span> 들어있나</h1>
+    <p class="lead">Claude Code + Johnny Decimal 기반 AI 워크스페이스 배포판. clone 하는 순간 아래 도구들이 전부 세팅된 상태로 시작합니다 — 자연어로 부르면 자동 실행됩니다.</p>
+    <div class="layers">
+      <div class="lchip"><span class="ln">SKILLS</span><b>스킬 34종</b><span class="ct">키워드 자동 트리거</span></div>
+      <div class="lchip c1"><span class="ln">AGENTS</span><b>에이전트 5종</b><span class="ct">복잡한 작업 위임</span></div>
+      <div class="lchip c3"><span class="ln">PLUGINS</span><b>플러그인 13종</b><span class="ct">설치 가이드 동봉</span></div>
+    </div>
+  </div>
+  <div class="caption"><span>설치 방법은 <span class="g">README.md</span> — GitHub 가입부터 첫 실행까지</span></div>
+  <div class="foot"><span>lush-ax-starter-pack</span><span>01 / 09</span></div>
+</section>
+
+<!-- 2 MAP -->
+<section class="slide">
+  <div class="body">
+    <div class="sec-title">한눈에 보기</div>
+    <div class="sec-sub">34 Skills + 5 Agents + 13 Plugins</div>
+    <div class="map">
+      <div class="mcol">
+        <div class="mnum">GROUP ①</div><h3>기록 · 지식</h3><div class="men">DAILY & KNOWLEDGE</div>
+        <div class="mcount">11<small>스킬</small></div>
+        <div class="mdesc">매일 쓰는 기본기. 데일리노트·할일·아이디어 캡처, 지식이 복리로 쌓이는 위키, 그리고 지식그래프.</div>
+        <div class="mtags"><span class="mtag">daily-note</span><span class="mtag">todo</span><span class="mtag">save</span><span class="mtag">wiki-ingest</span><span class="mtag">graphify</span><span class="mtag">…</span></div>
+      </div>
+      <div class="mcol mc1">
+        <div class="mnum">GROUP ②</div><h3>문서 · 제작</h3><div class="men">DOCS & BUILD</div>
+        <div class="mcount">14<small>스킬</small></div>
+        <div class="mdesc">엑셀·PDF·한글 문서 변환부터 PRD 기획, 웹 UI 제작, 병렬 작업 분해·실행·통합까지.</div>
+        <div class="mtags"><span class="mtag">excel-to-csv</span><span class="mtag">md-to-pdf</span><span class="mtag">frontend-design</span><span class="mtag">decompose</span><span class="mtag">…</span></div>
+      </div>
+      <div class="mcol mc3">
+        <div class="mnum">GROUP ③</div><h3>세일즈 · 연동 · 위임</h3><div class="men">SALES & CONNECT</div>
+        <div class="mcount">9+5<small>스킬 + 에이전트</small></div>
+        <div class="mdesc">세일즈 분석·예측 자동화와 업무 동료 AI 펭귄, Notion·웹 크롤링 연동, 그리고 리서치·분석·개발 서브에이전트.</div>
+        <div class="mtags"><span class="mtag">sales-analysis</span><span class="mtag">work-penguin</span><span class="mtag">notion-handler</span><span class="mtag">research-worker</span><span class="mtag">…</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="caption"><span>기록·지식 <span class="g">11</span> · 문서·제작 <span class="g">14</span> · 세일즈·연동·위임 <span class="g">14</span></span></div>
+  <div class="foot"><span>OVERVIEW</span><span>02 / 09</span></div>
+</section>
+
+<!-- 3 DAILY -->
+<section class="slide">
+  <div class="body">
+    <div class="eyebrow"><span class="sep"></span><b>GROUP ①</b> · 기록 — 매일 쓰는 8종</div>
+    <div class="sec-title">데일리 · 기록</div>
+    <div class="sec-sub">Daily Routine · 8 skills</div>
+    <div class="skgrid">
+      <div class="sk"><span class="nm">daily-note</span><p><b>"오늘 daily note 만들어줘"</b> — 오늘 날짜 데일리노트 생성. 캘린더 연동 시 일정 포함</p></div>
+      <div class="sk"><span class="nm">daily-review</span><p><b>"오늘 뭐 했지?"</b> — 어제·오늘 변경사항 분석 + 오늘 우선순위 제안</p></div>
+      <div class="sk"><span class="nm">todo</span><p><b>"할 일 추가해줘"</b> — 우선순위 자동 감지로 빠른 할 일 캡처</p></div>
+      <div class="sk"><span class="nm">todos</span><p><b>"오늘 할 일 보여줘"</b> — 전체/오늘/프로젝트별/오버듀 조회 및 통계</p></div>
+      <div class="sk"><span class="nm">idea</span><p><b>"이 아이디어 기록해줘"</b> — 대화 속 아이디어·인사이트를 추출해 저장</p></div>
+      <div class="sk"><span class="nm">weekly-synthesis</span><p><b>"이번 주 회고해줘"</b> — 한 주 작업·사고를 종합해 주간 리뷰 생성</p></div>
+      <div class="sk"><span class="nm">progress</span><p><b>"진행상황 저장해줘"</b> — 현재 작업을 프로젝트 progress.md에 기록</p></div>
+      <div class="sk"><span class="nm">save</span><p><b>"저장해줘"</b> — Git 커밋+푸시+데일리노트 기록을 한 번에</p></div>
+    </div>
+  </div>
+  <div class="caption"><span>아침 <span class="g">daily-note</span> → 종일 <span class="g">todo·idea</span> → 퇴근 전 <span class="g">save</span></span></div>
+  <div class="foot"><span>① DAILY</span><span>03 / 09</span></div>
+</section>
+
+<!-- 4 KNOWLEDGE + DOCS -->
+<section class="slide">
+  <div class="body">
+    <div class="eyebrow"><span class="sep"></span><b>GROUP ①②</b> · 지식 3종 + 문서 변환 6종</div>
+    <div class="sec-title">지식 · 문서 변환</div>
+    <div class="sec-sub">Knowledge & Document Pipeline · 9 skills</div>
+    <div class="skgrid">
+      <div class="sk"><span class="nm">wiki-ingest</span><p><b>"위키에 반영해줘"</b> — 소스를 분석해 위키 토픽 페이지에 통합·축적</p></div>
+      <div class="sk"><span class="nm">wiki-lint</span><p><b>"위키 점검해줘"</b> — 모순·고아 페이지·오래된 정보 헬스체크</p></div>
+      <div class="sk"><span class="nm">graphify</span><p><b>"/graphify [폴더]"</b> — 코드·문서를 지식그래프로 시각화·질의</p></div>
+      <div class="sk"><span class="nm">excel-to-csv</span><p><b>"엑셀 변환해줘"</b> — Excel을 CSV로 변환해 분석 가능하게</p></div>
+      <div class="sk"><span class="nm">csv-clean</span><p><b>"데이터 정리해줘"</b> — 소계행 제거·숫자 정리·날짜 정규화·unpivot</p></div>
+      <div class="sk"><span class="nm">pdf-to-md</span><p><b>"PDF 변환해줘"</b> — 표·헤딩 보존하며 PDF를 마크다운으로</p></div>
+      <div class="sk"><span class="nm">md-to-pdf</span><p><b>"핸드아웃 만들어줘"</b> — 마크다운을 A4 인쇄용 PDF 문서로</p></div>
+      <div class="sk"><span class="nm">hwpxskill</span><p>한글(HWPX) 문서 생성·읽기·편집</p></div>
+      <div class="sk"><span class="nm">transcript-organizer</span><p><b>"녹음 정리해줘"</b> — 강의·미팅 녹취록 구조화 분석 (STT 오인식 교정)</p></div>
+    </div>
+  </div>
+  <div class="caption"><span>엑셀 → CSV → 분석 → <span class="g">PDF 보고서</span> · 지식은 <span class="g">위키에 복리로</span></span></div>
+  <div class="foot"><span>①② KNOWLEDGE & DOCS</span><span>04 / 09</span></div>
+</section>
+
+<!-- 5 BUILD -->
+<section class="slide steel">
+  <div class="body">
+    <div class="eyebrow"><span class="sep"></span><b>GROUP ②</b> · 기획·제작 8종</div>
+    <div class="sec-title">기획 · 제작</div>
+    <div class="sec-sub">Plan & Build · 8 skills</div>
+    <div class="skgrid">
+      <div class="sk"><span class="nm">thinking-partner</span><p><b>"같이 생각해보자"</b> — 질문으로 사고를 촉진하는 협력적 사고 파트너</p></div>
+      <div class="sk"><span class="nm">dashboard-prd</span><p><b>"대시보드 기획해줘"</b> — 대화형으로 대시보드 PRD 작성</p></div>
+      <div class="sk"><span class="nm">webapp-prd</span><p><b>"웹앱 만들고 싶어"</b> — 니즈에 맞는 웹앱 PRD 대화형 생성</p></div>
+      <div class="sk"><span class="nm">frontend-design</span><p>템플릿 티 안 나는 고품질 웹 UI·페이지 제작</p></div>
+      <div class="sk"><span class="nm">ui-ux-pro-max</span><p>50+ 스타일·161 팔레트·차트 25종 UI/UX 디자인 인텔리전스</p></div>
+      <div class="sk"><span class="nm">decompose</span><p><b>"작업 분해해줘"</b> — 큰 미션을 병렬 실행 가능한 작업으로 분해</p></div>
+      <div class="sk"><span class="nm">execute</span><p>분해된 작업을 워커 에이전트로 병렬 실행</p></div>
+      <div class="sk"><span class="nm">integrate</span><p>병렬 작업 결과를 통합해 최종 산출물 생성</p></div>
+    </div>
+  </div>
+  <div class="caption"><span>기획(PRD) → <span class="g">분해 → 병렬 실행 → 통합</span> 파이프라인</span></div>
+  <div class="foot"><span>② BUILD</span><span>05 / 09</span></div>
+</section>
+
+<!-- 6 SALES -->
+<section class="slide gold">
+  <div class="body">
+    <div class="eyebrow"><span class="sep"></span><b>GROUP ③</b> · 세일즈·업무 자동화 4종</div>
+    <div class="sec-title">세일즈 · 업무 자동화</div>
+    <div class="sec-sub">Sales & Work Automation · 4 skills</div>
+    <div class="skgrid">
+      <div class="sk"><span class="nm">sales-analysis</span><p><b>"매출 분석해줘"</b> — 예측 vs 실적, 수요 예측, 리포트 생성, 전처리 통합 프레임워크</p></div>
+      <div class="sk"><span class="nm">product-forecast</span><p><b>"실적 비교해줘"</b> — 예측 vs 실적 ±20% 기준 자동 판정 + 월간 리포트</p></div>
+      <div class="sk"><span class="nm">product-sales-analysis</span><p><b>"월간 세일즈 분석"</b> — 카테고리·TOP품목·채널 심층 모듈식 인텔리전스</p></div>
+      <div class="sk"><span class="nm">work-penguin</span><p><b>"펭귄아"</b> — 업무 동료 AI. 업무 진단 → 개선 발굴 → 산출물 제작 → 효과 측정 루프</p></div>
+    </div>
+  </div>
+  <div class="caption"><span>내 업무를 말하면 <span class="g">진단 → 자동화 → 측정</span>까지</span></div>
+  <div class="foot"><span>③ SALES & AUTOMATION</span><span>06 / 09</span></div>
+</section>
+
+<!-- 7 CONNECT + AGENTS -->
+<section class="slide gold">
+  <div class="body">
+    <div class="eyebrow"><span class="sep"></span><b>GROUP ③</b> · 연동 5종 + 에이전트 5종</div>
+    <div class="sec-title">외부 연동 & 에이전트</div>
+    <div class="sec-sub">Connect & Delegate</div>
+    <div class="skgrid" style="margin-bottom:16px">
+      <div class="sk"><span class="nm">notion-handler</span><p><b>"노션에 저장해줘"</b> — Notion DB·페이지 생성 및 관리</p></div>
+      <div class="sk"><span class="nm">youtube-to-notion</span><p>YouTube URL을 파싱해 노션 DB에 정리 저장</p></div>
+      <div class="sk"><span class="nm">web-crawler-ocr</span><p><b>"이 URL 분석해줘"</b> — 웹 크롤링 + 이미지 OCR 자동 분석</p></div>
+      <div class="sk"><span class="nm">doc-updater</span><p>Claude Code 공식 문서 변경사항을 지식 폴더에 자동 동기화</p></div>
+      <div class="sk"><span class="nm">setup-workspace</span><p><b>"워크스페이스 세팅해줘"</b> — 첫 clone 후 초기 설정 원스톱</p></div>
+    </div>
+    <div class="aggrid" style="grid-template-columns:repeat(5,197px);gap:10px">
+      <div class="ag"><div class="nm">research-worker</div><p>3개+ 소스 교차검증 웹 리서치</p></div>
+      <div class="ag"><div class="nm">analysis-worker</div><p>데이터 분석·패턴·전략 평가</p></div>
+      <div class="ag"><div class="nm">content-worker</div><p>글쓰기·문서·콘텐츠 구조화</p></div>
+      <div class="ag"><div class="nm">development-worker</div><p>코드·자동화·API 연동</p></div>
+      <div class="ag"><div class="nm">zettelkasten-linker</div><p>노트 품질 분석·링크 제안</p></div>
+    </div>
+  </div>
+  <div class="caption"><span>"<span class="g">research-worker로 조사해줘</span>" 처럼 이름으로 직접 위임 가능</span></div>
+  <div class="foot"><span>③ CONNECT & AGENTS</span><span>07 / 09</span></div>
+</section>
+
+<!-- 8 PLUGINS -->
+<section class="slide steel">
+  <div class="body">
+    <div class="eyebrow"><span class="sep"></span><b>PLUGINS</b> · 외부 플러그인 13종 (선택 설치)</div>
+    <div class="sec-title">더 깔면 좋은 것들</div>
+    <div class="sec-sub">External Plugins · /plugin install · 가이드 동봉</div>
+    <div class="skgrid">
+      <div class="sk"><span class="nm">superpowers</span><p>작업 규율 세트 — 브레인스토밍·계획·디버깅·완료 전 검증</p></div>
+      <div class="sk"><span class="nm">last30days</span><p>최근 30일 트렌드 리서치 — Reddit·HN·X·YouTube</p></div>
+      <div class="sk"><span class="nm">hyperframes</span><p>영상 제작 — 모션그래픽·슬라이드쇼·런칭 영상</p></div>
+      <div class="sk"><span class="nm">watch</span><p>영상 시청·분석 — 다운로드·프레임 추출·전사</p></div>
+      <div class="sk"><span class="nm">taste-skill</span><p>프리미엄 프론트엔드 디자인 (안티-슬롭)</p></div>
+      <div class="sk"><span class="nm">karpathy-skills</span><p>코딩 시 흔한 LLM 실수 방지 가이드라인</p></div>
+      <div class="sk"><span class="nm">skill-creator</span><p>나만의 스킬 직접 만들기</p></div>
+      <div class="sk"><span class="nm">pm-skills (6종)</span><p>제품 전략·시장 조사·데이터 분석·GTM·그로스·실행</p></div>
+    </div>
+  </div>
+  <div class="caption"><span>설치 명령어 전체는 <span class="g">00-system/03-guides/plugins-setup-guide.md</span></span></div>
+  <div class="foot"><span>EXTERNAL PLUGINS</span><span>08 / 09</span></div>
+</section>
+
+<!-- 9 START -->
+<section class="slide">
+  <div class="body">
+    <div class="sec-title">시작하기</div>
+    <div class="sec-sub">Install · 자세한 단계는 README.md</div>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div><b>GitHub 가입 + Git 설치</b><p>github.com 가입 → <code>git config --global user.name / user.email</code> 설정</p></div></div>
+      <div class="step"><div class="n">2</div><div><b>Claude Code 설치</b><p>Mac <code>curl -fsSL https://claude.ai/install.sh | bash</code> · Windows <code>irm https://claude.ai/install.ps1 | iex</code></p></div></div>
+      <div class="step"><div class="n">3</div><div><b>스타터팩 다운로드</b><p><code>git clone</code> 또는 GitHub의 초록색 Code 버튼 → Download ZIP</p></div></div>
+      <div class="step"><div class="n">4</div><div><b>첫 실행</b><p>폴더에서 <code>claude</code> 실행 → 로그인 → "워크스페이스 세팅해줘"</p></div></div>
+    </div>
+  </div>
+  <div class="caption"><span>15분이면 <span class="g">내 AI 워크스페이스</span>가 생깁니다</span></div>
+  <div class="foot"><span>GETTING STARTED</span><span>09 / 09</span></div>
+</section>
+
+</body>
+</html>
