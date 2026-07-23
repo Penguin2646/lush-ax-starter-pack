@@ -276,17 +276,94 @@ Claude Code 안에서 `/plugin` 명령으로 설치 — 명령어 전체 목록�
 
 ## Step 6. (선택) 내 GitHub 저장소로 백업 연결
 
-작업 내용을 본인 GitHub에 백업하려면:
+작업 내용을 본인 GitHub에 백업(push)하려면, 먼저 **내 GitHub 계정 인증**이 필요합니다.
+GitHub CLI(`gh`)라는 도구가 로그인/인증을 대신 처리해 줘요. 이게 있어야 Claude Code가 여러분 계정 권한으로 pull/push를 실행할 수 있습니다.
+
+### 6-1. GitHub CLI(gh) 설치
+
+**Windows (PowerShell):**
+
+```powershell
+winget install --id GitHub.cli
+```
+
+**Mac:**
+
+1. https://github.com/cli/cli/releases/latest 접속
+2. 목록에서 내 Mac에 맞는 `.pkg` 파일 다운로드
+   - **Apple Silicon (M1/M2/M3/M4)**: `gh_..._macOS_arm64.pkg`
+   - **Intel Mac**: `gh_..._macOS_amd64.pkg`
+   - 내 Mac 종류 확인: 화면 왼쪽 상단  → "이 Mac에 관하여" → 칩 항목
+3. 다운로드된 파일 실행 → 계속 클릭 → 완료
+
+> 💡 Homebrew를 이미 쓰고 있다면 `brew install gh` 한 줄로도 됩니다. (이 가이드에서는 Homebrew 설치를 요구하지 않으므로, 없다면 위 .pkg 방식을 쓰세요)
+
+### 6-2. 터미널 껐다 켜고 설치 확인
+
+방금 설치한 `gh`가 터미널에 인식되려면 재시작이 필요합니다. 터미널(PowerShell)을 완전히 닫고 새로 연 뒤:
+
+```bash
+gh --version
+```
+
+버전 숫자가 나오면 정상 설치! (안 나오면 PC 재부팅 후 다시 시도)
+
+### 6-3. GitHub 로그인 인증
+
+```bash
+gh auth login
+```
+
+이 과정에서 내 GitHub 계정과 터미널이 실제로 연결됩니다. 화면에 질문이 순서대로 뜨는데, 이렇게 답하세요 (방향키 + Enter):
+
+| 질문 | 선택 |
+|------|------|
+| What account do you want to log into? | **GitHub.com** |
+| What is your preferred protocol for Git operations? | **HTTPS** |
+| Authenticate Git with your GitHub credentials? | **Yes** |
+| How would you like to authenticate? | **Login with a web browser** |
+
+마지막에 **일회용 코드**(예: `XXXX-XXXX`)가 뜹니다 → 그대로 Enter → 브라우저가 열리면 GitHub 로그인 후 그 코드를 입력하고 승인하면 끝!
+
+확인:
+
+```bash
+gh auth status
+```
+
+`Logged in to github.com` 이 보이면 인증 성공입니다.
+
+### 6-4. 내 저장소 만들고 연결
 
 1. GitHub에서 **New repository** 클릭 → 이름 입력(예: `my-workspace`) → **Private** 선택 → Create
 2. 터미널에서 워크스페이스 폴더로 이동 후:
+
 ```bash
 git remote set-url origin https://github.com/내아이디/my-workspace.git
 git push -u origin main
 ```
-3. 이후에는 Claude에게 **"저장해줘"** 라고만 하면 `save` 스킬이 커밋+푸시를 알아서 합니다.
 
 > ⚠️ 업무 내용을 담는 저장소는 반드시 **Private**으로 만드세요.
+
+### 6-5. 이후에는 말로 시키면 됩니다
+
+인증이 끝났으니, 워크스페이스 폴더에서 `claude`를 실행하고 자연어로 부탁하면 됩니다:
+
+```
+저장해줘                          # save 스킬 — 커밋 + 푸시 자동 처리
+다른 PC에서 작업한 것 풀해줘       # git pull 실행
+```
+
+### GitHub 연동 — 잘 안 될 때
+
+**push할 때 인증 오류가 남**
+→ `gh auth status`로 로그인 상태 확인. `You are not logged in`이면 6-3부터 다시.
+
+**`gh`를 찾을 수 없다고 나옴**
+→ 터미널을 완전히 닫고 새로 열기. 그래도 안 되면 재부팅.
+
+**Mac인데 git이 없다고 나옴**
+→ Mac 설치 1단계(Xcode Command Line Tools)를 하면 git이 함께 설치됩니다. `git --version`으로 확인하세요.
 
 ---
 
