@@ -287,13 +287,12 @@ GitHub CLI(`gh`)라는 도구가 로그인/인증을 대신 처리해 줘요. �
 winget install --id GitHub.cli
 ```
 
+> 💡 `winget`이 없다고 나오면: https://github.com/cli/cli/releases/latest 에서 `gh_..._windows_amd64.msi` 다운로드 → 실행 → Next 계속 클릭
+
 **Mac:**
 
 1. https://github.com/cli/cli/releases/latest 접속
-2. 목록에서 내 Mac에 맞는 `.pkg` 파일 다운로드
-   - **Apple Silicon (M1/M2/M3/M4)**: `gh_..._macOS_arm64.pkg`
-   - **Intel Mac**: `gh_..._macOS_amd64.pkg`
-   - 내 Mac 종류 확인: 화면 왼쪽 상단  → "이 Mac에 관하여" → 칩 항목
+2. `gh_..._macOS_universal.pkg` 다운로드 (Apple Silicon/Intel 구분 없이 이 파일 하나면 됩니다)
 3. 다운로드된 파일 실행 → 계속 클릭 → 완료
 
 > 💡 Homebrew를 이미 쓰고 있다면 `brew install gh` 한 줄로도 됩니다. (이 가이드에서는 Homebrew 설치를 요구하지 않으므로, 없다면 위 .pkg 방식을 쓰세요)
@@ -318,10 +317,12 @@ gh auth login
 
 | 질문 | 선택 |
 |------|------|
-| What account do you want to log into? | **GitHub.com** |
-| What is your preferred protocol for Git operations? | **HTTPS** |
-| Authenticate Git with your GitHub credentials? | **Yes** |
-| How would you like to authenticate? | **Login with a web browser** |
+| Where do you use GitHub? | **GitHub.com** |
+| What is your preferred protocol for Git operations on this host? | **HTTPS** |
+| Authenticate Git with your GitHub credentials? | **Yes** (Y 입력) |
+| How would you like to authenticate GitHub CLI? | **Login with a web browser** |
+
+> 질문 문구는 gh 버전에 따라 조금 다를 수 있지만, 답 순서는 같습니다: **GitHub.com → HTTPS → Yes → 웹 브라우저 로그인**
 
 마지막에 **일회용 코드**(예: `XXXX-XXXX`)가 뜹니다 → 그대로 Enter → 브라우저가 열리면 GitHub 로그인 후 그 코드를 입력하고 승인하면 끝!
 
@@ -336,12 +337,27 @@ gh auth status
 ### 6-4. 내 저장소 만들고 연결
 
 1. GitHub에서 **New repository** 클릭 → 이름 입력(예: `my-workspace`) → **Private** 선택 → Create
-2. 터미널에서 워크스페이스 폴더로 이동 후:
+2. 터미널에서 워크스페이스 폴더로 이동 후, **다운로드 방법에 따라** 아래 중 하나 실행:
+
+**Step 3에서 방법 A(git clone)로 받은 경우:**
 
 ```bash
 git remote set-url origin https://github.com/내아이디/my-workspace.git
 git push -u origin main
 ```
+
+**Step 3에서 방법 B(ZIP)로 받은 경우** (폴더가 아직 git 저장소가 아니므로 먼저 만들어야 합니다):
+
+```bash
+git init -b main
+git add .
+git commit -m "start"
+git remote add origin https://github.com/내아이디/my-workspace.git
+git push -u origin main
+```
+
+> 💡 명령어가 부담스러우면 워크스페이스 폴더에서 `claude` 실행 후 이렇게 말해도 됩니다:
+> "이 폴더를 https://github.com/내아이디/my-workspace 에 백업 연결하고 푸시해줘"
 
 > ⚠️ 업무 내용을 담는 저장소는 반드시 **Private**으로 만드세요.
 
