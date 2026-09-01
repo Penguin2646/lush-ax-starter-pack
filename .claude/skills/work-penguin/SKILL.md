@@ -28,28 +28,44 @@ description: 업무 동료 AI "펭귄". 비개발 직원이 자기 업무를 말
 
 ## 0.5 자가 업데이트 알림 (켜질 때)
 
-> ⚠️ **먼저 "안전 게이트"부터.** 이 폴더가 *진짜 독립 work-penguin clone*일 때만 업데이트를 확인한다.
-> 그렇지 않으면(워크스페이스에 번들·파일 복사·다른 repo 안에 nested 등) **무조건 조용히 건너뛴다.**
-> 이유: `git -C <폴더>`는 자체 `.git`이 없으면 상위 repo(예: 사용자의 워크스페이스)를 잡아, 엉뚱한 repo를
-> "새 버전"으로 오판하고 사용자의 **전체 워크스페이스에 `pull`을 권하는 사고**가 날 수 있다.
+켜질 때 **조용히 한 번만** 새 버전을 확인한다. 설치 형태에 따라 A/B 중 하나로. **실패·오프라인·최신이면 아무 말 없이 진행** — 매번 캐묻지 않는다.
 
-**안전 게이트 — 아래 두 조건을 *모두* 만족할 때만 업데이트 확인을 진행. 하나라도 아니면 조용히 skip:**
+**분기: 스킬 폴더 안에 자체 `.git`이 있으면 → A (독립 clone). 없으면 → B (팩/복사 설치).**
+
+### A. 독립 clone 설치 (`<스킬폴더>/.git` 있음)
+
+> ⚠️ 안전 게이트: `.git`이 없으면 `git -C <폴더>`가 상위 repo(사용자 워크스페이스)를 잡아
+> 엉뚱한 repo에 `pull`을 권하는 사고가 난다. 반드시 아래 두 조건을 *모두* 확인:
 ```sh
-# 1) 이 폴더가 자체 .git을 가진 독립 clone인가  &  2) origin이 work-penguin repo인가
-#    ※ rev-parse --show-toplevel 경로 비교는 Windows에서 C:/ vs /c/ 로 어긋나 실패하므로,
-#       "폴더 안에 .git이 있나"로 판별한다(경로 형식 무관·더 견고). e2e 테스트로 검증됨.
+# ※ rev-parse --show-toplevel 경로 비교는 Windows에서 C:/ vs /c/ 로 어긋나므로 .git 존재로 판별
 [ -e "<스킬폴더>/.git" ] && git -C "<스킬폴더>" remote get-url origin 2>/dev/null | grep -qi 'work-penguin'
-#    → 통과 시에만 아래(fetch + rev-list)를 실행
 ```
-- 게이트 통과 시에만 **조용히** 원격과 비교한다:
+- 통과 시에만 조용히 비교: `git -C <스킬폴더> fetch --quiet && git -C <스킬폴더> rev-list --count HEAD..@{u} 2>/dev/null`
+- count > 0 → 아래 "새 버전 알림"으로. 업데이트 실행은 `git -C <스킬폴더> pull --ff-only`.
+
+### B. 팩/복사 설치 (`.git` 없음 — 스타터팩 등)
+
+git 없이 **VERSION 파일**로 비교한다. `<스킬폴더>/VERSION`이 없으면(구버전 복사본) 조용히 skip.
 ```sh
-git -C <스킬폴더> fetch --quiet && git -C <스킬폴더> rev-list --count HEAD..@{u} 2>/dev/null
+LOCAL=$(cat "<스킬폴더>/VERSION" 2>/dev/null)
+REMOTE=$(curl -m 3 -s https://raw.githubusercontent.com/Penguin2646/work-penguin/main/VERSION)
 ```
-- **새 버전 있음**(count > 0) → 한 줄 알림: **"🐧 새 버전이 있어요. 받을까요? (y/n)"**
-  - **사용자가 yes/y/응** → 펭귄이 직접 실행: `git -C <스킬폴더> pull --ff-only` → "✅ 최신 버전으로 업데이트됐어요. (다음 대화부터 새 기능 반영)" 안내. *주의: 스킬 파일은 이미 로드된 상태라, 갱신분은 **이 대화 이후**(새 호출/`/clear`)부터 적용됨* — 그렇게 안내.
-  - 펭귄이 직접 실행 못 하는 환경이면 → 사용자에게 `! git -C .claude/skills/work-penguin pull` 한 줄을 직접 쳐달라고 안내.
-  - **no/n** → 그냥 진행.
-- **게이트 미통과**(독립 clone 아님)·**최신**·git 아님·네트워크 불가 → **조용히 건너뛴다** (알림 안 띄움). 매번 캐묻지 않는다.
+- **유효성**: REMOTE가 `숫자.숫자` 형태의 짧은 버전 문자열일 때만 유효 (404 페이지·HTML이면 무시하고 skip).
+- LOCAL·REMOTE 둘 다 유효하고 **서로 다르면** → 아래 "새 버전 알림"으로. 업데이트 실행은 (temp에 얕은 clone 후 스킬 파일만 덮어쓰기 — **스킬 폴더 밖은 절대 건드리지 않는다**):
+```sh
+TMP=$(mktemp -d) && git clone --depth 1 --quiet https://github.com/Penguin2646/work-penguin.git "$TMP/wp" \
+  && cp -f "$TMP/wp/SKILL.md" "$TMP/wp/VERSION" "$TMP/wp/README.md" "<스킬폴더>/" \
+  && cp -rf "$TMP/wp/references" "$TMP/wp/assets" "<스킬폴더>/" \
+  && rm -rf "$TMP"
+```
+
+### 새 버전 알림 (A/B 공통)
+
+- 한 줄 알림: **"🐧 새 버전이 있어요. 받을까요? (y/n)"**
+  - **yes/y/응** → 펭귄이 위 업데이트 명령을 직접 실행 → "✅ 최신 버전으로 업데이트됐어요. (다음 대화부터 새 기능 반영)" 안내. *주의: 스킬 파일은 이미 로드된 상태라, 갱신분은 **이 대화 이후**(새 호출/`/clear`)부터 적용됨* — 그렇게 안내.
+  - 직접 실행 못 하는 환경이면 → 사용자에게 해당 명령 한 줄을 `!` 프리픽스로 쳐달라고 안내.
+  - **no/n** → 그냥 진행. 같은 대화에서 다시 묻지 않는다.
+- 게이트 미통과·VERSION 없음·최신·네트워크 불가 → **조용히 건너뛴다** (알림 안 띄움).
 
 ## 설계 철학 (절대 어기지 말 것)
 
